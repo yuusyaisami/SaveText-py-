@@ -6,24 +6,25 @@ class SaveText:
     # nameをFalseまたはTrueにしないでください
     # 同じ名前がある場合上書き保存をしなかった場合新しく変数を作ります
     def add(name, data, path):
+        SaveText.create_text_file(path)
         lines = []
         name_lines = []
         data_lines = []
         if os.path.isfile(path):
-            lines = SaveText.textfile_data_list(path)
-            SaveText.clear(path)
-            name_lines, data_lines = SaveText.separate_data_and_names(lines)
+            lines = SaveText.textfile_data_list(path) # textfile内のデータを行ずつリストに入れる
+            SaveText.clear(path) # ファイル内を削除
+            name_lines, data_lines = SaveText.separate_data_and_names(lines) # name と dataでリストに分ける
             existvariable = False
             for lineindex in range(len(lines)):
-                if name_lines[lineindex] == name:
+                if name_lines[lineindex] == name: # 同じ名前のリストを探す
                     existvariable = True
                     name_lines[lineindex] = str(name) # namelistに変数名を書き込む
                     data_lines[lineindex] = str(data) # datalistに新しいデータを書き込む
                     break
             if not existvariable: # 変数が存在しなかったら
-                name_lines.append(str(name))
+                name_lines.append(str(name)) # 変数を追加する
                 data_lines.append(str(data))
-            SaveText.write_to_text_file(name_lines, data_lines, path)
+            SaveText.write_to_text_file(name_lines, data_lines, path) # テキストファイルにnameとdataを関連させて保存する
 
     def delete(name, path):
         lines = []
@@ -72,7 +73,7 @@ class SaveText:
                     if type == "string":
                         return data_lines[lineindex]
     def create_text_file(path):
-        with open(path, 'w') as file:
+        with open(path, 'r') as file:
             pass
 
     # 開発者用
@@ -114,11 +115,12 @@ if __name__ == '__main__':
     SaveText.add("D", hanbetuD, "savedata.txt")
     SaveText.add("pokemon", 11, "savedata.txt")
     SaveText.add("dorakue", 110, "savedata.txt")
-    SaveText.add("pu-ta", 2525, "savedata.txt")
+    SaveText.add("ぴゅーた", 2525, "savedata.txt")
 
     print("----------------ファイル入出力あと--------------------")
     newvariable_modoki = SaveText.search("newvariable", "savedata.txt", "int") + 10
     hanbetuD = SaveText.search("D", "savedata.txt")
     print("modoki" + " : " + str(newvariable_modoki))
     print("not modoki" + " : " + str(newvariable))
+    print(SaveText.search("ぴゅーた", "savedata.txt"))
     print(hanbetuD)
